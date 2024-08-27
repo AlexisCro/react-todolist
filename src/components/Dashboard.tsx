@@ -2,15 +2,8 @@
 
 import { FC } from 'react';
 import { Task } from '../App';
-import { Label, Pie, PieChart } from "recharts";
 import { BarChartComponent } from './ui/BarChart';
-
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "../components/ui/chart";
+import { PieChartComponent } from './ui/PieChart';
 
 type IProps = {
   tasks: Array<Task>;
@@ -35,25 +28,6 @@ const Dashboard: FC<IProps> = (props) => {
       );
     }
   }
-
-  const chartData = [
-    { name: "Completed", value: tasks.filter(t => t.isDone).length, fill: "green" },
-    { name: "Remaining", value: tasks.length - tasks.filter(t => t.isDone).length, fill: "orange" },
-  ];
-
-  const chartConfig = {
-    tasks: {
-      label: "Tasks",
-    },
-    completed: {
-      label: "Completed",
-      color: "green",
-    },
-    remaining: {
-      label: "Remaining",
-      color: "orange",
-    },
-  } satisfies ChartConfig;
   
   return (
     <>
@@ -64,58 +38,7 @@ const Dashboard: FC<IProps> = (props) => {
           <p className='m-2'>Completed Tasks : {tasks.filter(t => t.isDone).length}</p>
           {renderPercentage()}
           <div className='flex flex-row items-center justify-around m-3'>
-            <ChartContainer
-              config={chartConfig}
-              className="mx-2 aspect-square"
-              style={{ 
-                width: 250,
-                height: 250,
-              }}
-            >
-              <PieChart>
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent hideLabel />}
-                />
-                  <Pie
-                    data={chartData}
-                    dataKey="value"
-                    nameKey="name"
-                    innerRadius={60}
-                    strokeWidth={5}
-                  >
-                    <Label
-                      content={({ viewBox }) => {
-                        if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                          return (
-                            <text
-                              x={viewBox.cx}
-                              y={viewBox.cy}
-                              textAnchor="middle"
-                              dominantBaseline="middle"
-                            >
-                              <tspan
-                                x={viewBox.cx}
-                                y={viewBox.cy}
-                                className="fill-foreground text-3xl font-bold"
-                              >
-                                {totalTasks.toLocaleString()}
-                              </tspan>
-                              <tspan
-                                x={viewBox.cx}
-                                y={(viewBox.cy || 0) + 24}
-                                className="fill-muted-foreground"
-                              >
-                                Tasks
-                              </tspan>
-                            </text>
-                          )
-                        }
-                      }}
-                    />
-                  </Pie>
-              </PieChart>
-            </ChartContainer>
+            <PieChartComponent tasks={tasks} />
             {renderBarChart()}
           </div>
         </div>

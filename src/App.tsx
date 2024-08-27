@@ -87,12 +87,6 @@ function App() {
       </h1>
       <div
         className='flex justify-center'>
-        <Button 
-          onClick={() => { 
-            addTodos();
-          }}
-          text='Add task'
-        />
         <Input
           placeholder='Add a task'
           type='text'
@@ -101,10 +95,22 @@ function App() {
             setInputValue(e.target.value);
           }}
         />
+        <Button 
+          onClick={() => { 
+            addTodos();
+          }}
+          text='Add task'
+        />
       </div>
       <div className='flex content-around justify-center w-full'>
         <div
-          className='flex flex-col items-center justify-center content-center w-1/2 m-2'
+          className='flex flex-col items-center justify-center w-1/2 m-2'
+          style={{
+            maxHeight: '50vh',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            paddingTop: '3rem'
+          }}
         >
           {tasksToDo.map((task, index) => (
             <div
@@ -139,27 +145,33 @@ function App() {
                 <DeleteButton
                   onClick={() => {
                     deleteTodo(index);
-                  }}
-                  key={index}
-                />
+                    }}
+                    key={index}
+                  />
+                  </div>
+                </div>
+                ))}
               </div>
-            </div>
-          ))}
-        </div>
-        <div
-          className='flex flex-col items-center justify-center content-center w-1/2 m-2'
-        >
-          {tasksDone.map((task, index) => (
-            <div
-              key={index}
-              className='flex justify-between border-2 border-gray-300 p-2 m-2 rounded-lg w-full'
-            >
-              <span className='flex self-center'>{task.value}</span>
-              <div className='flex justify-around items-center'>
-                <label>✅</label>
-                <CheckBoxDone
-                  task={task}
-                  onClick={(e) => {
+              <div
+                className='flex flex-col items-center justify-center w-1/2 m-2'
+                style={{
+                  maxHeight: '50vh',
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+                  paddingTop: '3rem'
+                }}
+              >
+                {tasksDone.map((task, index) => (
+                <div
+                  key={index}
+                  className='flex justify-between border-2 border-gray-300 p-2 m-2 rounded-lg w-full'
+                >
+                  <span className='flex self-center'>{task.value}</span>
+                  <div className='flex justify-around items-center'>
+                  <label>✅</label>
+                  <CheckBoxDone
+                    task={task}
+                    onClick={(e) => {
                     checkDone(e);
                   }}
                 />

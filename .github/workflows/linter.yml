@@ -1,0 +1,22 @@
+name: Linter
+
+on: [push]
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  lint:
+    name: Lint Codebase
+    runs-on: ubuntu-latest
+
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Lint code
+      run: npm run lint

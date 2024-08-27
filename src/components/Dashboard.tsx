@@ -2,7 +2,7 @@
 
 import { FC } from 'react';
 import { Task } from '../App';
-import { Label, Pie, PieChart, Bar, BarChart, XAxis } from "recharts";
+import { Label, Pie, PieChart } from "recharts";
 import { BarChartComponent } from './ui/BarChart';
 
 import {

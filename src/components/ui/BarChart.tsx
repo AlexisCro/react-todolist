@@ -1,12 +1,10 @@
 import { FC } from 'react';
 import { Task } from '../../App';
-import { Label, Bar, BarChart, XAxis } from "recharts";
+import { Bar, BarChart, XAxis } from "recharts";
 
 import {
   ChartConfig,
   ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
 } from "./chart";
 
 type IProps = {

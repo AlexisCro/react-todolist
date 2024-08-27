@@ -2,11 +2,13 @@ import { Button } from './components/Button';
 import { Input } from './components/Input';
 import { DeleteButton } from './components/DeleteButton';
 import { EditButton } from './components/EditButton';
-import { CheckBox } from './components/CheckBox';
+import { CheckBoxDone } from './components/CheckBoxDone';
+import { CheckBoxUrgent } from './components/CheckBoxUrgent';
 import { Dashboard } from './components/Dashboard';
 import { useState } from 'react';
 
 export type Task = {
+  id: number;
   value: string;
   isDone: boolean;
   urgent: boolean;
@@ -15,6 +17,7 @@ export type Task = {
 function App() {
   const [inputValue, setInputValue] = useState('');
   const [tasks, setTasks] = useState<Array<Task>>([]);
+  const [id, setId] = useState(0);
 
   const addTodos = () => {
     const newTasks = [
@@ -22,11 +25,14 @@ function App() {
       {
         value: inputValue,
         isDone: false,
+        urgent: false,
+        id: id,
       }
     ];
 
     setTasks(newTasks);
     setInputValue('');
+    setId(id + 1);
   }
 
   const deleteTodo = (index: number) => {
@@ -47,6 +53,30 @@ function App() {
       setTasks(newTasks);
     }
   }
+
+  const checkDone = (e) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const newTasks = tasks.map((task, _i) => {
+      task.isDone = task.id === parseInt(e.target.id) ? !task.isDone : task.isDone;
+      return task;
+    });
+
+    setTasks(newTasks);
+  };
+
+  const checkUrgent = (e) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const newTasks = tasks.map((task, _i) => {
+      task.urgent = task.id === parseInt(e.target.id) ? !task.urgent : task.urgent;
+      return task;
+    });
+
+    setTasks(newTasks);
+  };
+
+
+  const tasksToDo = tasks.filter((task) => !task.isDone);
+  const tasksDone = tasks.filter((task) => task.isDone);
 
   return (
     <>
@@ -72,50 +102,89 @@ function App() {
           }}
         />
       </div>
-      <div
-        className='flex flex-col items-center justify-center content-center'
-      >
-        {tasks.map((task, index) => (
-          <div
-            key={index}
-            className='flex justify-between border-2 border-gray-300 p-2 m-2 rounded-lg w-5/6'
-          >
-            <span className='flex self-center'>{task.value}</span>
-            <div className='flex justify-around items-center'>
-              <label>✅</label>
-              <CheckBox
-                onClick={() => {
-                  const newTasks = tasks.map((t, i) => {
-                    t.isDone = i === index ? !t.isDone : t.isDone;
-                    return t;
-                  });
-                  setTasks(newTasks);
-                }}
-              />
-              <label>🚨</label>
-              <CheckBox
-                onClick={() => {
-                  const newTasks = tasks.map((t, i) => {
-                    t.urgent = i === index ? !t.urgent : t.urgent;
-                    return t;
-                  });
-                  setTasks(newTasks);
-                }}
-              />
-              <EditButton
-                onClick={() => {
-                  editTodo(index);
-                }}
-              />
-              <DeleteButton
-                onClick={() => {
-                  deleteTodo(index);
-                }}
-                key={index}
-              />
+      <div className='flex content-around justify-center w-full'>
+        <div
+          className='flex flex-col items-center justify-center content-center w-1/2 m-2'
+        >
+          {tasksToDo.map((task, index) => (
+            <div
+              key={task.id}
+              className='flex justify-between border-2 border-gray-300 p-2 m-2 rounded-lg w-full'
+            >
+              <span className='flex self-center'>{task.value}</span>
+              <div className='flex justify-around items-center'>
+                <label>✅</label>
+                <CheckBoxDone
+                  task={task}
+                  key={task.id}
+                  id={task.id.toString()}
+                  onClick={(e) => {
+                    checkDone(e);
+                  }}
+                />
+                <label>🚨</label>
+                <CheckBoxUrgent
+                  task={task}
+                  key={task.id}
+                  id={task.id.toString()}
+                  onClick={(e) => {
+                    checkUrgent(e)
+                  }}
+                />
+                <EditButton
+                  onClick={() => {
+                    editTodo(index);
+                  }}
+                />
+                <DeleteButton
+                  onClick={() => {
+                    deleteTodo(index);
+                  }}
+                  key={index}
+                />
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div
+          className='flex flex-col items-center justify-center content-center w-1/2 m-2'
+        >
+          {tasksDone.map((task, index) => (
+            <div
+              key={index}
+              className='flex justify-between border-2 border-gray-300 p-2 m-2 rounded-lg w-full'
+            >
+              <span className='flex self-center'>{task.value}</span>
+              <div className='flex justify-around items-center'>
+                <label>✅</label>
+                <CheckBoxDone
+                  task={task}
+                  onClick={(e) => {
+                    checkDone(e);
+                  }}
+                />
+                <label>🚨</label>
+                <CheckBoxUrgent
+                  task={task}
+                  onClick={(e) => {
+                    checkUrgent(e);
+                  }}
+                />
+                <EditButton
+                  onClick={() => {
+                    editTodo(index);
+                  }}
+                />
+                <DeleteButton
+                  onClick={() => {
+                    deleteTodo(index);
+                  }}
+                  key={index}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       <Dashboard
         tasks={tasks}

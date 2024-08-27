@@ -9,10 +9,10 @@ const DeleteButton: FC<IProps> = (props) => {
 
   return (
     <button
-      className='bg-red-500 rounded-lg p-1 m-2 w-24 text-white'
+      className='bg-red-500 rounded-lg p-1 m-2 w-10 text-white'
       onClick={onClick}
     >
-      Delete
+      &#128465;
     </button>
   );
 };

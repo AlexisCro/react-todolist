@@ -9,6 +9,7 @@ import { useState } from 'react';
 export type Task = {
   value: string;
   isDone: boolean;
+  urgent: boolean;
 };
 
 function App() {
@@ -81,6 +82,7 @@ function App() {
           >
             <span className='flex self-center'>{task.value}</span>
             <div className='flex justify-around items-center'>
+              <label>✅</label>
               <CheckBox
                 onClick={() => {
                   const newTasks = tasks.map((t, i) => {
@@ -88,7 +90,16 @@ function App() {
                     return t;
                   });
                   setTasks(newTasks);
-                  console.log(tasks);
+                }}
+              />
+              <label>🚨</label>
+              <CheckBox
+                onClick={() => {
+                  const newTasks = tasks.map((t, i) => {
+                    t.urgent = i === index ? !t.urgent : t.urgent;
+                    return t;
+                  });
+                  setTasks(newTasks);
                 }}
               />
               <EditButton

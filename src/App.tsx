@@ -6,7 +6,7 @@ import { CheckBoxDone } from './components/CheckBoxDone';
 import { CheckBoxUrgent } from './components/CheckBoxUrgent';
 import { Dashboard } from './components/Dashboard';
 import { ShowOnlyUrgent } from './components/ShowOnlyUrgent';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 // TODO: Add date to tasks
 // TODO: Add a filter to show only urgent tasks
@@ -87,7 +87,7 @@ function App() {
     }
   }
 
-  const checkDone = (e) => {
+  const checkDone = (e: ChangeEvent<HTMLInputElement>) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const newTasks = tasks.map((task, _i) => {
       task.isDone = task.id === parseInt(e.target.id) ? !task.isDone : task.isDone;
@@ -98,7 +98,7 @@ function App() {
     saveLocalStorage(newTasks);
   };
 
-  const checkUrgent = (e) => {
+  const checkUrgent = (e: ChangeEvent<HTMLInputElement>) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const newTasks = tasks.map((task, _i) => {
       task.urgent = task.id === parseInt(e.target.id) ? !task.urgent : task.urgent;
@@ -137,7 +137,7 @@ function App() {
         className='flex justify-around'
       >
         <ShowOnlyUrgent
-          onClick={(e) => {
+          onChange={(e) => {
             if (e.target.checked) {
               setTasksTodo(tasksTodo.filter((task: Task) => task.urgent));
             } else {
@@ -171,7 +171,7 @@ function App() {
                 <CheckBoxDone
                   task={task}
                   id={task.id.toString()}
-                  onClick={(e) => {
+                  onChange={(e) => {
                     checkDone(e);
                   }}
                 />
@@ -179,7 +179,7 @@ function App() {
                 <CheckBoxUrgent
                   task={task}
                   id={task.id.toString()}
-                  onClick={(e) => {
+                  onChange={(e) => {
                     checkUrgent(e)
                   }}
                 />
@@ -216,14 +216,16 @@ function App() {
                   <label>✅</label>
                   <CheckBoxDone
                     task={task}
-                    onClick={(e) => {
+                    id={task.id.toString()}
+                    onChange={(e) => {
                     checkDone(e);
                   }}
                 />
                 <label>🚨</label>
                 <CheckBoxUrgent
+                  id={task.id.toString()}
                   task={task}
-                  onClick={(e) => {
+                  onChange={(e) => {
                     checkUrgent(e);
                   }}
                 />
@@ -242,9 +244,9 @@ function App() {
           ))}
         </div>
       </div>
-      {/* <Dashboard
+      <Dashboard
         tasks={tasksList}
-      /> */}
+      />
     </>
   )
 }

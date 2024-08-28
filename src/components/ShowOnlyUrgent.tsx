@@ -1,11 +1,11 @@
-import { FC, MouseEventHandler } from 'react';
+import { FC, ChangeEventHandler } from 'react';
 
 type IProps = {
-  onClick: MouseEventHandler<HTMLInputElement>;
+  onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
 const ShowOnlyUrgent: FC<IProps> = (props) => {
-  const { onClick } = props;
+  const { onChange } = props;
 
   return (
     <div>
@@ -14,7 +14,7 @@ const ShowOnlyUrgent: FC<IProps> = (props) => {
         type='checkbox'
         style={{width: 20, height: 20}}
         className='accent-red-500 m-2'
-        onClick={onClick}
+        onChange={onChange}
       />
     </div>
   );

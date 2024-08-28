@@ -7,6 +7,14 @@ import { CheckBoxUrgent } from './components/CheckBoxUrgent';
 import { Dashboard } from './components/Dashboard';
 import { useState } from 'react';
 
+// TODO: Add date to tasks
+// TODO: Add a filter to show only urgent tasks
+// TODO: Sort tasks by date
+// TODO: Sort tasks by urgent
+// TODO: reorganize the layout
+// TODO: Responsive design
+// TODO: deploy to github pages
+
 export type Task = {
   id: number;
   value: string;
@@ -15,9 +23,14 @@ export type Task = {
 };
 
 function App() {
+  const tasksList = JSON.parse(localStorage.getItem('tasks') || '[]');
   const [inputValue, setInputValue] = useState('');
-  const [tasks, setTasks] = useState<Array<Task>>([]);
-  const [id, setId] = useState(0);
+  const [tasks, setTasks] = useState<Array<Task>>(tasksList);
+  const [id, setId] = useState(tasksList[tasksList.length - 1].id + 1);
+
+  const saveLocalStorage = (tasks: Array<Task>) => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
 
   const addTodos = () => {
     const newTasks = [
@@ -33,11 +46,13 @@ function App() {
     setTasks(newTasks);
     setInputValue('');
     setId(id + 1);
+    saveLocalStorage(newTasks);
   }
 
   const deleteTodo = (index: number) => {
     const newTasks = tasks.filter((_, i) => i !== index);
     setTasks(newTasks);
+    saveLocalStorage(newTasks);
   }
 
   const editTodo = (index: number) => {
@@ -51,6 +66,7 @@ function App() {
         return t;
       });
       setTasks(newTasks);
+      saveLocalStorage(newTasks);
     }
   }
 
@@ -62,6 +78,7 @@ function App() {
     });
 
     setTasks(newTasks);
+    saveLocalStorage(newTasks);
   };
 
   const checkUrgent = (e) => {
@@ -72,11 +89,12 @@ function App() {
     });
 
     setTasks(newTasks);
+    saveLocalStorage(newTasks);
   };
 
-
-  const tasksToDo = tasks.filter((task) => !task.isDone);
-  const tasksDone = tasks.filter((task) => task.isDone);
+  const tasksFromLocalStorage = localStorage.getItem('tasks');
+  const tasksToDo = JSON.parse(tasksFromLocalStorage || '[]').filter((task: Task) => !task.isDone);
+  const tasksDone = JSON.parse(tasksFromLocalStorage || '[]').filter((task: Task) => task.isDone);
 
   return (
     <>

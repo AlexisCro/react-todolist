@@ -225,7 +225,8 @@ function App() {
                   paddingTop: '3rem'
                 }}
               >
-                {tasksDone.map((task, index) => (
+                {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
+                {tasksDone.map((task, _index) => (
                 <div
                   key={task.id}
                   className='flex justify-between border-2 border-gray-300 p-2 m-2 rounded-lg w-full'

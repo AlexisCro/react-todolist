@@ -37,7 +37,7 @@ const Dashboard: FC<IProps> = (props) => {
           <p className='m-2'>Total Tasks : {tasks.length}</p>
           <p className='m-2'>Completed Tasks : {tasks.filter(t => t.isDone).length}</p>
           {renderPercentage()}
-          <div className='flex flex-row items-center justify-around m-3'>
+          <div className='flex flex-row items-center justify-around m-3 grid md:grid-cols-2'>
             <PieChartComponent tasks={tasks} />
             {renderBarChart()}
           </div>

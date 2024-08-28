@@ -5,6 +5,7 @@ import { EditButton } from './components/EditButton';
 import { CheckBoxDone } from './components/CheckBoxDone';
 import { CheckBoxUrgent } from './components/CheckBoxUrgent';
 import { Dashboard } from './components/Dashboard';
+import { ShowOnlyUrgent } from './components/ShowOnlyUrgent';
 import { useState } from 'react';
 
 // TODO: Add date to tasks
@@ -13,6 +14,7 @@ import { useState } from 'react';
 // TODO: Sort tasks by urgent
 // TODO: reorganize the layout
 // TODO: Responsive design
+// TODO: Spec
 // TODO: deploy to github pages
 
 export type Task = {
@@ -26,10 +28,25 @@ function App() {
   const tasksList = JSON.parse(localStorage.getItem('tasks') || '[]');
   const [inputValue, setInputValue] = useState('');
   const [tasks, setTasks] = useState<Array<Task>>(tasksList);
-  const [id, setId] = useState(tasksList[tasksList.length - 1].id + 1);
+  const [tasksTodo, setTasksTodo] = useState<Array<Task>>(tasksList.filter((task: Task) => !task.isDone));
+  const [tasksDone, setTasksDone] = useState<Array<Task>>(tasksList.filter((task: Task) => task.isDone));
+
+  let lastTaskId;
+  if (tasksList.length === 0) {
+    lastTaskId = 0;
+  } else {
+    lastTaskId = tasksList[tasksList.length - 1].id;
+  }
+  const [id, setId] = useState(lastTaskId + 1);
 
   const saveLocalStorage = (tasks: Array<Task>) => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+
+  const updateUseStates = (tasks: Array<Task>) => {
+    setTasks(tasks);
+    setTasksDone(tasks.filter((task: Task) => task.isDone));
+    setTasksTodo(tasks.filter((task: Task) => !task.isDone));
   }
 
   const addTodos = () => {
@@ -43,7 +60,7 @@ function App() {
       }
     ];
 
-    setTasks(newTasks);
+    updateUseStates(newTasks);
     setInputValue('');
     setId(id + 1);
     saveLocalStorage(newTasks);
@@ -51,7 +68,7 @@ function App() {
 
   const deleteTodo = (index: number) => {
     const newTasks = tasks.filter((_, i) => i !== index);
-    setTasks(newTasks);
+    updateUseStates(newTasks);
     saveLocalStorage(newTasks);
   }
 
@@ -65,7 +82,7 @@ function App() {
         }
         return t;
       });
-      setTasks(newTasks);
+      updateUseStates(newTasks);
       saveLocalStorage(newTasks);
     }
   }
@@ -77,7 +94,7 @@ function App() {
       return task;
     });
 
-    setTasks(newTasks);
+    updateUseStates(newTasks);
     saveLocalStorage(newTasks);
   };
 
@@ -88,13 +105,9 @@ function App() {
       return task;
     });
 
-    setTasks(newTasks);
+    updateUseStates(newTasks);
     saveLocalStorage(newTasks);
   };
-
-  const tasksFromLocalStorage = localStorage.getItem('tasks');
-  const tasksToDo = JSON.parse(tasksFromLocalStorage || '[]').filter((task: Task) => !task.isDone);
-  const tasksDone = JSON.parse(tasksFromLocalStorage || '[]').filter((task: Task) => task.isDone);
 
   return (
     <>
@@ -120,6 +133,20 @@ function App() {
           text='Add task'
         />
       </div>
+      <div
+        className='flex justify-around'
+      >
+        <ShowOnlyUrgent
+          onClick={(e) => {
+            if (e.target.checked) {
+              setTasksTodo(tasksTodo.filter((task: Task) => task.urgent));
+            } else {
+              setTasksTodo(tasksList.filter((task: Task) => !task.isDone));
+            }
+            setTasks(tasksTodo);
+          }}
+        />
+      </div>
       <div className='flex content-around justify-center w-full'>
         <div
           className='flex flex-col items-center justify-center w-1/2 m-2'
@@ -130,7 +157,7 @@ function App() {
             paddingTop: '3rem'
           }}
         >
-          {tasksToDo.map((task, index) => (
+          {tasksTodo.map((task, index) => (
             <div
               key={task.id}
               className='flex justify-between border-2 border-gray-300 p-2 m-2 rounded-lg w-full'
@@ -217,7 +244,7 @@ function App() {
         </div>
       </div>
       <Dashboard
-        tasks={tasks}
+        tasks={tasksList}
       />
     </>
   )

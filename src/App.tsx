@@ -10,8 +10,6 @@ import { ClearAllTasks } from './components/ClearAllTasks';
 import { SortUrgent } from './components/SortUrgent';
 import { ChangeEvent, useState } from 'react';
 
-// TODO: Add date to tasks
-// TODO: Sort tasks by date
 // TODO: reorganize the layout
 // TODO: Responsive design
 // TODO: Spec
@@ -166,78 +164,92 @@ function App() {
           }}
         />
       </div>
-      <div className='flex justify-center w-full grid md:grid-cols-2'>
-        <div
-          data-testid='todo'
-          className='flex flex-col items-center justify-center m-2'
-          style={{
-            maxHeight: '50vh',
-            overflowY: 'auto',
-            overflowX: 'hidden',
-            paddingTop: '3rem'
-          }}
-        >
-          {tasksTodo.map((task, index) => (
-            <div
-              key={task.id}
-              className='flex justify-between border-2 border-gray-300 p-2 m-2 rounded-lg w-full'
-            >
-              <span 
-                data-testid={`task-${index}`}
-                className='flex self-center'>{task.value}</span>
-              <div className='flex justify-around items-center'>
-                <label>✅</label>
-                <CheckBoxDone
-                  task={task}
-                  id={task.id.toString()}
-                  onChange={(e) => {
-                    checkDone(e);
-                  }}
-                />
-                <label>🚨</label>
-                <CheckBoxUrgent
-                  task={task}
-                  id={task.id.toString()}
-                  onChange={(e) => {
-                    checkUrgent(e)
-                  }}
-                />
-                <EditButton
-                  onClick={() => {
-                    editTodo(task.id);
-                  }}
-                />
-                <DeleteButton
-                  onClick={() => {
-                    deleteTodo(task.id);
-                    }}
-                  />
-                  </div>
-                </div>
-                ))}
-              </div>
+      <div className='flex text-center justify-center w-full grid md:grid-cols-2'>
+        <div className='w-full flex flex-column'>
+          <div
+            data-testid='todo'
+            className='flex flex-col items-center justify-start m-2 w-full'
+            style={{
+              maxHeight: '50vh',
+              overflowY: 'auto',
+              overflowX: 'hidden',
+              paddingTop: '3rem'
+            }}
+          >
+            <p className='text-xl font-semibold'>To Do</p>
+            {tasksTodo.map((task, index) => (
               <div
-                className='flex flex-col items-center justify-center m-2'
-                style={{
-                  maxHeight: '50vh',
-                  overflowY: 'auto',
-                  overflowX: 'hidden',
-                  paddingTop: '3rem'
-                }}
+                key={task.id}
+                className='flex justify-between border-2 border-gray-300 p-2 my-2 rounded-lg w-full'
               >
-                {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
-                {tasksDone.map((task, _index) => (
-                <div
-                  key={task.id}
-                  className='flex justify-between border-2 border-gray-300 p-2 m-2 rounded-lg w-full'
-                >
-                  <span className='flex self-center'>{task.value}</span>
-                  <div className='flex justify-around items-center'>
+                <div className='text-wrap w-80'>
+                  <span 
+                    data-testid={`task-${index}`}
+                    className='flex self-center'
+                  >
+                    {task.value}  
+                  </span>                
+                </div>
+
+                
+                <div className='flex justify-around items-center'>
                   <label>✅</label>
                   <CheckBoxDone
                     task={task}
                     id={task.id.toString()}
                     onChange={(e) => {
+                      checkDone(e);
+                    }}
+                  />
+                  <label>🚨</label>
+                  <CheckBoxUrgent
+                    task={task}
+                    id={task.id.toString()}
+                    onChange={(e) => {
+                      checkUrgent(e)
+                    }}
+                  />
+                  <EditButton
+                    onClick={() => {
+                      editTodo(task.id);
+                    }}
+                  />
+                  <DeleteButton
+                    onClick={() => {
+                      deleteTodo(task.id);
+                      }}
+                    />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className='w-full flex flex-column justify-start'>
+          <div
+            className='flex flex-col items-center justify-start m-2 w-full'
+            style={{
+              maxHeight: '50vh',
+              overflowY: 'auto',
+              overflowX: 'hidden',
+              paddingTop: '3rem'
+            }}
+          >
+            <p className='text-xl font-semibold'>Done</p>
+            {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
+            {tasksDone.map((task, _index) => (
+              <div
+                key={task.id}
+                className='flex justify-between border-2 border-gray-300 p-2 m-2 rounded-lg w-full'
+              >
+                <div className='text-wrap'>
+                  <span className='flex self-center'>{task.value}</span>
+                </div>
+                <div className='flex justify-around items-center'>
+                <label>✅</label>
+                <CheckBoxDone
+                  task={task}
+                  id={task.id.toString()}
+                  onChange={(e) => {
                     checkDone(e);
                   }}
                 />
@@ -256,7 +268,8 @@ function App() {
                 />
               </div>
             </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
       <Dashboard

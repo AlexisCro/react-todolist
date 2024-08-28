@@ -6,10 +6,11 @@ import { CheckBoxDone } from './components/CheckBoxDone';
 import { CheckBoxUrgent } from './components/CheckBoxUrgent';
 import { Dashboard } from './components/Dashboard';
 import { ShowOnlyUrgent } from './components/ShowOnlyUrgent';
+import { ClearAllTasks } from './components/ClearAllTasks';
+import { SortUrgent } from './components/SortUrgent';
 import { ChangeEvent, useState } from 'react';
 
 // TODO: Add date to tasks
-// TODO: Add a filter to show only urgent tasks
 // TODO: Sort tasks by date
 // TODO: Sort tasks by urgent
 // TODO: reorganize the layout
@@ -144,6 +145,21 @@ function App() {
               setTasksTodo(tasksList.filter((task: Task) => !task.isDone));
             }
             setTasks(tasksTodo);
+          }}
+        />
+        <SortUrgent
+          onClick={() => {
+            const sortedTasks = tasksList.sort((a: Task, b: Task) => {
+              return a.urgent === b.urgent ? 0 : a.urgent ? -1 : 1;
+            });
+            updateUseStates(sortedTasks);
+            saveLocalStorage(sortedTasks);
+          }}
+        />
+        <ClearAllTasks
+          onClick={() => {
+            updateUseStates([]);
+            saveLocalStorage([]);
           }}
         />
       </div>

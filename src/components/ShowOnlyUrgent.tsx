@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import { FC, MouseEventHandler } from 'react';
 
 type IProps = {
-  onClick: () => void;
+  onClick: MouseEventHandler<HTMLInputElement>;
 };
 
 const ShowOnlyUrgent: FC<IProps> = (props) => {

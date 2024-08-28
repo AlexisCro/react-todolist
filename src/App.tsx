@@ -149,6 +149,7 @@ function App() {
       </div>
       <div className='flex content-around justify-center w-full'>
         <div
+          data-testid='todo'
           className='flex flex-col items-center justify-center w-1/2 m-2'
           style={{
             maxHeight: '50vh',
@@ -162,12 +163,13 @@ function App() {
               key={task.id}
               className='flex justify-between border-2 border-gray-300 p-2 m-2 rounded-lg w-full'
             >
-              <span className='flex self-center'>{task.value}</span>
+              <span 
+                data-testid={`task-${index}`}
+                className='flex self-center'>{task.value}</span>
               <div className='flex justify-around items-center'>
                 <label>✅</label>
                 <CheckBoxDone
                   task={task}
-                  key={task.id}
                   id={task.id.toString()}
                   onClick={(e) => {
                     checkDone(e);
@@ -176,7 +178,6 @@ function App() {
                 <label>🚨</label>
                 <CheckBoxUrgent
                   task={task}
-                  key={task.id}
                   id={task.id.toString()}
                   onClick={(e) => {
                     checkUrgent(e)
@@ -191,7 +192,6 @@ function App() {
                   onClick={() => {
                     deleteTodo(index);
                     }}
-                    key={index}
                   />
                   </div>
                 </div>
@@ -208,7 +208,7 @@ function App() {
               >
                 {tasksDone.map((task, index) => (
                 <div
-                  key={index}
+                  key={task.id}
                   className='flex justify-between border-2 border-gray-300 p-2 m-2 rounded-lg w-full'
                 >
                   <span className='flex self-center'>{task.value}</span>
@@ -236,16 +236,15 @@ function App() {
                   onClick={() => {
                     deleteTodo(index);
                   }}
-                  key={index}
                 />
               </div>
             </div>
           ))}
         </div>
       </div>
-      <Dashboard
+      {/* <Dashboard
         tasks={tasksList}
-      />
+      /> */}
     </>
   )
 }

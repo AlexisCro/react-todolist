@@ -158,8 +158,10 @@ function App() {
         />
         <ClearAllTasks
           onClick={() => {
-            updateUseStates([]);
-            saveLocalStorage([]);
+            if (window.confirm('Are you sure you want to delete all tasks?')) {
+              updateUseStates([]);
+              saveLocalStorage([]);
+            }
           }}
         />
       </div>

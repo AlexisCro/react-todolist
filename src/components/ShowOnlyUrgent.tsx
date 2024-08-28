@@ -8,7 +8,7 @@ const ShowOnlyUrgent: FC<IProps> = (props) => {
   const { onChange } = props;
 
   return (
-    <div>
+    <div className='flex justify-center items-center'>
       <label>Show only urgent tasks</label>
       <input
         type='checkbox'

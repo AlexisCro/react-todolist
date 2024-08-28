@@ -12,7 +12,6 @@ import { ChangeEvent, useState } from 'react';
 
 // TODO: Add date to tasks
 // TODO: Sort tasks by date
-// TODO: Sort tasks by urgent
 // TODO: reorganize the layout
 // TODO: Responsive design
 // TODO: Spec
@@ -65,24 +64,24 @@ function App() {
     setInputValue('');
     setId(id + 1);
     saveLocalStorage(newTasks);
+    document.getElementById('input')?.focus();
   }
 
-  const deleteTodo = (index: number) => {
-    const newTasks = tasks.filter((_, i) => i !== index);
+  const deleteTodo = (id: number) => {
+    const newTasks = tasksList.filter((task: Task) => task.id !== id);
+    
     updateUseStates(newTasks);
     saveLocalStorage(newTasks);
   }
 
-  const editTodo = (index: number) => {
-    const newTask = prompt('Enter new task');
+  const editTodo = (id: number) => {
+    const index = tasksList.findIndex((task: Task) => task.id === id);
+    const newTasks = tasksList;
+    const newTask = prompt('Enter new task', newTasks[index].value);
     if (newTask) {
-      const newTasks = tasks.map((t, i) => {
-        if (i === index) {
-          t.value = newTask;
-          return t;
-        }
-        return t;
-      });
+      // Find task from local storage with id
+      newTasks[index].value = newTask;
+      
       updateUseStates(newTasks);
       saveLocalStorage(newTasks);
     }
@@ -120,6 +119,8 @@ function App() {
       <div
         className='flex justify-center'>
         <Input
+          id="input"
+          autofocus={true}
           placeholder='Add a task'
           type='text'
           value={inputValue}
@@ -127,15 +128,15 @@ function App() {
             setInputValue(e.target.value);
           }}
         />
-        <Button 
-          onClick={() => { 
+        <Button
+          onClick={() => {
             addTodos();
           }}
           text='Add task'
         />
       </div>
       <div
-        className='flex justify-around'
+        className='flex justify-around grid md:grid-cols-3'
       >
         <ShowOnlyUrgent
           onChange={(e) => {
@@ -165,10 +166,10 @@ function App() {
           }}
         />
       </div>
-      <div className='flex content-around justify-center w-full'>
+      <div className='flex justify-center w-full grid md:grid-cols-2'>
         <div
           data-testid='todo'
-          className='flex flex-col items-center justify-center w-1/2 m-2'
+          className='flex flex-col items-center justify-center m-2'
           style={{
             maxHeight: '50vh',
             overflowY: 'auto',
@@ -203,12 +204,12 @@ function App() {
                 />
                 <EditButton
                   onClick={() => {
-                    editTodo(index);
+                    editTodo(task.id);
                   }}
                 />
                 <DeleteButton
                   onClick={() => {
-                    deleteTodo(index);
+                    deleteTodo(task.id);
                     }}
                   />
                   </div>
@@ -216,7 +217,7 @@ function App() {
                 ))}
               </div>
               <div
-                className='flex flex-col items-center justify-center w-1/2 m-2'
+                className='flex flex-col items-center justify-center m-2'
                 style={{
                   maxHeight: '50vh',
                   overflowY: 'auto',
@@ -247,14 +248,9 @@ function App() {
                     checkUrgent(e);
                   }}
                 />
-                <EditButton
-                  onClick={() => {
-                    editTodo(index);
-                  }}
-                />
                 <DeleteButton
                   onClick={() => {
-                    deleteTodo(index);
+                    deleteTodo(task.id);
                   }}
                 />
               </div>

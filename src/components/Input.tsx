@@ -5,13 +5,17 @@ type IProps = {
   value: string;
   placeholder: string;
   type: 'text';
+  autofocus: boolean;
+  id: string;
 };
 
 const Input: FC<IProps> = (props) => {
-  const { onChange, placeholder, value } = props;
+  const { onChange, placeholder, value, autofocus, id } = props;
 
   return(
     <input
+      id={id}
+      autoFocus={autofocus}
       onChange={onChange}
       type='text'
       placeholder={placeholder}

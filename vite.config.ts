@@ -8,5 +8,6 @@ export default defineConfig({
   test: {
       environment: 'jsdom',
       testTimeout: 10000,
-  }
+  },
+  base: '/react-todolist/',
 })

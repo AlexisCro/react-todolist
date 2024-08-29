@@ -164,11 +164,11 @@ function App() {
           }}
         />
       </div>
-      <div className='flex text-center justify-center w-full grid md:grid-cols-2'>
-        <div className='w-full flex flex-column'>
+      <div className='flex text-center justify-center grid md:grid-cols-2'>
+        <div className='flex flex-column'>
           <div
             data-testid='todo'
-            className='flex flex-col items-center justify-start m-2 w-full px-2'
+            className='flex flex-col items-center w-full justify-start m-2 px-2'
             style={{
               maxHeight: '50vh',
               overflowY: 'auto',
@@ -182,7 +182,7 @@ function App() {
                 key={task.id}
                 className='flex justify-between border-2 border-gray-300 p-2 my-2 rounded-lg w-full'
               >
-                <div className='text-wrap w-80'>
+                <div className='text-wrap'>
                   <span 
                     data-testid={`task-${index}`}
                     className='flex self-center'
@@ -224,7 +224,7 @@ function App() {
             ))}
           </div>
         </div>
-        <div className='w-full flex flex-column justify-start'>
+        <div className='flex flex-column justify-start'>
           <div
             className='flex flex-col items-center justify-start m-2 w-full px-2'
             style={{

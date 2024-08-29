@@ -1,1 +1,0 @@
-export const generateKey = (value: string, idx: number) => `${value}-${idx}`;

@@ -168,7 +168,7 @@ function App() {
         <div className='w-full flex flex-column'>
           <div
             data-testid='todo'
-            className='flex flex-col items-center justify-start m-2 w-full'
+            className='flex flex-col items-center justify-start m-2 w-full px-2'
             style={{
               maxHeight: '50vh',
               overflowY: 'auto',
@@ -226,7 +226,7 @@ function App() {
         </div>
         <div className='w-full flex flex-column justify-start'>
           <div
-            className='flex flex-col items-center justify-start m-2 w-full'
+            className='flex flex-col items-center justify-start m-2 w-full px-2'
             style={{
               maxHeight: '50vh',
               overflowY: 'auto',

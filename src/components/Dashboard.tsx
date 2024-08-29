@@ -16,13 +16,13 @@ const Dashboard: FC<IProps> = (props) => {
   const renderPercentage = () => {
     if (tasks.length > 0) {
       return (
-        <p className='m-2'>Percent Completed : {tasks.filter(t => t.isDone).length * 100 / totalTasks} %</p>
+        <p className='m-2'>Percent Completed : {(tasks.filter(t => t.isDone).length * 100 / totalTasks).toFixed(2)} %</p>
       );
     }
   }
 
   const renderBarChart = () => {
-    if (tasks.length > 0) {
+    if (tasks.length > 0 && tasks.filter(t => t.urgent).length > 0) {
       return (
         <BarChartComponent tasks={tasks} />
       );
